@@ -13,6 +13,7 @@ model customers {
   last_name   String?
   email       String?
   join_date   DateTime? @db.Timestamp(6)
+  uploads     uploads[]
 }
 
 model leads {
@@ -28,9 +29,10 @@ model leads {
 }
 
 model products {
-  product_id  BigInt  @id
+  product_id  BigInt    @id
   drone_model String?
   price       BigInt?
+  uploads     uploads[]
 }
 
 model sales_funnel {
@@ -47,9 +49,10 @@ model sales_funnel {
 }
 
 model sites {
-  site_id   BigInt  @id
+  site_id   BigInt   @id
   upload_id BigInt?
   location  String?
+  uploads   uploads? @relation(fields: [upload_id], references: [upload_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_sites_uploads")
 }
 
 model stages {
@@ -60,9 +63,12 @@ model stages {
 }
 
 model uploads {
-  upload_id   BigInt    @id
+  upload_id   BigInt     @id
   customer_id BigInt?
-  upload_date DateTime? @db.Timestamp(6)
+  upload_date DateTime?  @db.Timestamp(6)
   total_size  Float?
   product_id  BigInt?
+  sites       sites[]
+  customers   customers? @relation(fields: [customer_id], references: [customer_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_uploads_customers")
+  products    products?  @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_uploads_products")
 }

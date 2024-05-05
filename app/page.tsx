@@ -1,6 +1,49 @@
 import Image from "next/image";
+import {
+  queryWrapper,
+  CUSTOMER_LARGEST_UPLOADS,
+  DRONE_UPLOAD_SIZE,
+  CUSTOMERS_MULTIPLE_DRONE,
+  MONTHLY_UPLOAD_ACTIVITY,
+  LARGEST_UPLOADS,
+  SITE_ACTIVITY,
+  CUSTOMER_DRONE_PREFERENCE,
+  UPLOADS_BY_MODEL,
+  RECENT_CUSTOMER_ACTIVITY,
+  getRecentCustomerActivity
+} from '@/lib/queries';
+import primsa from '@/lib/prisma';
 
-export default function Home() {
+export default async function Home() {
+  // Drone Cards
+  const droneUploads = await queryWrapper({ stmt: DRONE_UPLOAD_SIZE });
+  const droneUploadsByModel = await queryWrapper({ stmt: UPLOADS_BY_MODEL });
+
+  // Upload Cards
+  const largestUploads = await queryWrapper({ stmt: LARGEST_UPLOADS });
+  const siteActivity = await queryWrapper({ stmt: SITE_ACTIVITY, limit: 1});
+
+  // Customer Table
+
+  const customerLargestUploads = await queryWrapper({
+    stmt: CUSTOMER_LARGEST_UPLOADS,
+    limit: 5,
+  });
+  const customersWithMultipleDrones = await queryWrapper({
+    stmt: CUSTOMERS_MULTIPLE_DRONE,
+    limit: 5,
+  });
+  const customerDronePreference = await queryWrapper({
+    stmt: CUSTOMER_DRONE_PREFERENCE,
+    limit: 5,
+  });
+  const recentCustomerActivity = await getRecentCustomerActivity(200);
+
+  // Line Charts
+  const monthlyUploadActivity = await queryWrapper({
+    stmt: MONTHLY_UPLOAD_ACTIVITY,
+  });
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">

@@ -82,3 +82,12 @@ ALTER TABLE "sales_funnel" ADD CONSTRAINT "fk_sales_funnel_leads" FOREIGN KEY ("
 -- AddForeignKey
 ALTER TABLE "sales_funnel" ADD CONSTRAINT "fk_sales_funnel_stages" FOREIGN KEY ("stage_id") REFERENCES "stages"("stage_id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
+-- AddForeignKey
+ALTER TABLE "sites" ADD CONSTRAINT "fk_sites_uploads" FOREIGN KEY ("upload_id") REFERENCES "uploads"("upload_id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- AddForeignKey
+ALTER TABLE "uploads" ADD CONSTRAINT "fk_uploads_customers" FOREIGN KEY ("customer_id") REFERENCES "customers"("customer_id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- AddForeignKey
+ALTER TABLE "uploads" ADD CONSTRAINT "fk_uploads_products" FOREIGN KEY ("product_id") REFERENCES "products"("product_id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+
