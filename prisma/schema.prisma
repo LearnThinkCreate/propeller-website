@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URL_NON_POOLING")
+}
+
+model customers {
+  customer_id BigInt    @id
+  first_name  String?
+  last_name   String?
+  email       String?
+  join_date   DateTime? @db.Timestamp(6)
+}
+
+model leads {
+  prospect_id     BigInt         @id
+  outcome         String?
+  latest_stage    String?
+  latest_stage_id BigInt?
+  created_on      DateTime?      @db.Timestamp(6)
+  date_completed  DateTime?      @db.Timestamp(6)
+  days_to_close   BigInt?
+  stages          stages?        @relation(fields: [latest_stage_id], references: [stage_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_leads_stages")
+  sales_funnel    sales_funnel[]
+}
+
+model products {
+  product_id  BigInt  @id
+  drone_model String?
+  price       BigInt?
+}
+
+model sales_funnel {
+  sales_id           BigInt    @id
+  lead_id            BigInt?
+  stage              String?
+  entered_stage_date DateTime? @db.Timestamp(6)
+  exited_stage_date  DateTime? @db.Timestamp(6)
+  outcome            String?
+  stage_id           BigInt?
+  age                BigInt?
+  leads              leads?    @relation(fields: [lead_id], references: [prospect_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_sales_funnel_leads")
+  stages             stages?   @relation(fields: [stage_id], references: [stage_id], onDelete: NoAction, onUpdate: NoAction, map: "fk_sales_funnel_stages")
+}
+
+model sites {
+  site_id   BigInt  @id
+  upload_id BigInt?
+  location  String?
+}
+
+model stages {
+  stage        String?
+  stage_id     BigInt         @id
+  leads        leads[]
+  sales_funnel sales_funnel[]
+}
+
+model uploads {
+  upload_id   BigInt    @id
+  customer_id BigInt?
+  upload_date DateTime? @db.Timestamp(6)
+  total_size  Float?
+  product_id  BigInt?
+}
