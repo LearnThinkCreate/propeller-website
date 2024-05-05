@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
+import { TailwindIndicator } from "@/components/tailwind-indicator";
 
 const fontSans = FontSans({
    subsets: ["latin"],
@@ -21,7 +22,7 @@ export default function RootLayout({
    children: React.ReactNode;
 }>) {
    return (
-      <html lang="en">
+      <html suppressHydrationWarning lang="en">
          <body
             className={cn(
                "min-h-screen bg-background font-sans antialiased",
@@ -31,10 +32,11 @@ export default function RootLayout({
             <ThemeProvider
                attribute="class"
                defaultTheme="dark"
-               enableSystem={false}
+               enableSystem
                disableTransitionOnChange
             >
                {children}
+               <TailwindIndicator />
             </ThemeProvider>
          </body>
       </html>

@@ -11,33 +11,38 @@ interface QueryWrapperParams {
 export const queryWrapper = async ({
    stmt,
    limit,
-   offset
+   offset,
 }: QueryWrapperParams) => {
    return await prisma.$queryRawUnsafe(`
       ${stmt}
       ${limit ? `LIMIT ${limit}` : ""}
       ${offset ? `OFFSET ${offset}` : ""}
    `);
-}
+};
 
 export const CUSTOMER_LARGEST_UPLOADS = `
 SELECT
-   customers.customer_id,
    first_name || ' ' || last_name as customer_name,
    CASE
       WHEN MAX(uploads.total_size) IS NULL THEN 0
       ELSE MAX(uploads.total_size)
-   END as largest_upload
+   END as largest_upload,
+   uploads.upload_date,
+   products.drone_model
 FROM 
    customers
 LEFT JOIN
    uploads ON customers.customer_id = uploads.customer_id
+LEFT JOIN
+   products ON uploads.product_id = products.product_id
 GROUP BY
    customers.customer_id,
-   customer_name
+   customer_name,
+   uploads.upload_date,
+   products.drone_model
 ORDER BY
    largest_upload DESC
-`
+`;
 
 export const DRONE_UPLOAD_SIZE = `
 SELECT
@@ -53,11 +58,10 @@ GROUP BY
    drone_model
 ORDER BY
    total_size DESC
-`
+`;
 
 export const CUSTOMERS_MULTIPLE_DRONE = `
 select
-   customers.customer_id,
    first_name || ' ' || last_name as customer_name,
    COUNT(DISTINCT uploads.product_id) as num_drones
 from
@@ -71,7 +75,7 @@ HAVING
    COUNT(DISTINCT uploads.product_id) > 1
 ORDER BY
    num_drones DESC, customers.customer_id DESC
-`
+`;
 
 export const MONTHLY_UPLOAD_ACTIVITY = `
 SELECT 
@@ -84,7 +88,7 @@ GROUP BY
    month
 ORDER BY
    month
-`
+`;
 
 export const LARGEST_UPLOADS = `
 SELECT
@@ -103,7 +107,7 @@ LEFT JOIN
 ORDER BY
    total_size DESC
 LIMIT 3
-`
+`;
 
 export const SITE_ACTIVITY = `
 SELECT
@@ -117,7 +121,7 @@ GROUP BY
    uploads.upload_id
 ORDER BY
    site_count desc
-`
+`;
 
 export const CUSTOMER_DRONE_PREFERENCE = `
 With CustomerDronePreference AS (
@@ -141,7 +145,6 @@ With CustomerDronePreference AS (
       drone_model
 )
 SELECT
-   customer_id,
    customer_name,
    drone_model,
    num_uploads
@@ -151,7 +154,7 @@ WHERE
    rn = 1
 ORDER BY
    num_uploads DESC
-`
+`;
 
 export const UPLOADS_BY_MODEL = `
 WITH TotalUploads AS (
@@ -179,42 +182,49 @@ FROM
    UploadsByModel
 ORDER BY
    percentage_of_total_uploads DESC
-`
+`;
 
 export const RECENT_CUSTOMER_ACTIVITY = `
 SELECT
-    customers.customer_id,
-    first_name || ' ' || last_name as customer_name,
-    MAX(upload_date) as last_upload_date
+   first_name || ' ' || last_name as customer_name,
+   products.drone_model,
+   MAX(upload_date) as last_upload_date
 FROM
-    customers
+   customers
+LEFT JOIN   
+   uploads ON customers.customer_id = uploads.customer_id
 LEFT JOIN
-    uploads ON customers.customer_id = uploads.customer_id
+   products ON uploads.product_id = products.product_id
 WHERE
-    upload_date >= CURRENT_DATE - INTERVAL '30 days'
+   upload_date >= CURRENT_DATE - INTERVAL '30 days'
 GROUP BY
-    customers.customer_id,
-    customer_name
+   customers.customer_id,
+   customer_name,
+   products.drone_model
 ORDER BY
-    last_upload_date DESC
-`
+   last_upload_date DESC
+`;
 
-export const getRecentCustomerActivity = async (days: number) => queryWrapper({
-   stmt: `
-   SELECT
-      customers.customer_id,
-      first_name || ' ' || last_name as customer_name,
-      MAX(upload_date) as last_upload_date
+export const getRecentCustomerActivity = async (days: number) =>
+   queryWrapper({
+      stmt: `
+      SELECT
+   first_name || ' ' || last_name as customer_name,
+   products.drone_model,
+   MAX(upload_date) as last_upload_date
    FROM
       customers
-   LEFT JOIN
+   LEFT JOIN   
       uploads ON customers.customer_id = uploads.customer_id
+   LEFT JOIN
+      products ON uploads.product_id = products.product_id
    WHERE
       upload_date >= CURRENT_DATE - INTERVAL '${days} days'
    GROUP BY
       customers.customer_id,
-      customer_name
+      customer_name,
+      products.drone_model
    ORDER BY
       last_upload_date DESC
-   `
-})
+   `,
+   });
