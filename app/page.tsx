@@ -14,6 +14,7 @@ import {
  } from "@/components/table/columns";
  import { Table } from "@/components/table/table";
  import { CustomerLargestUploads, CustomersWithMultipleDrones, CustomerDronePreference, RecentCustomerActivity, PropellerTable } from "@/lib/definitions";
+import { GraphMonthlyActivity } from "@/components/graph-monthly-activity";
 
 export default async function Home() {
   // Drone Cards
@@ -33,21 +34,26 @@ export default async function Home() {
     // limit: 5,
   }) as CustomerLargestUploads[];
 
-  // Line Charts
+  // Line Chart
 
   const monthlyUploadActivity = await queryWrapper({
     stmt: MONTHLY_UPLOAD_ACTIVITY,
-  });
+  }).then((data: any) => data.map((d: any) => ({
+    ...d,
+    Uploads: Number(d.Uploads),
+  })));
+  // console.log(monthlyUploadActivity)
 
   const customersWithMultipleDrones = await queryWrapper({
     stmt: CUSTOMERS_MULTIPLE_DRONE,
   })
 
-  // console.log(typeof customersWithMultipleDrones[0].num_drones)
+  // console.log(monthlyUploadActivity)
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <Table initialData={customerLargestUploads} initalColumns={customerLargestUploadsColumns} />
+    <main className="flex min-h-screen flex-col items-center justify-between p-6">
+      {/* <Table initialData={customerLargestUploads} initalColumns={customerLargestUploadsColumns} /> */}
+      {/* <GraphMonthlyActivity data={JSON.stringify(monthlyUploadActivity)} /> */}
     </main>
   );
 }

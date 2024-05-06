@@ -23,8 +23,8 @@ export async function GET(
    request: Request,
    { params }: { params: { name: string } }
 ) {
-   console.log("Executing table-data route");
-   console.log("Params:", params);
+   // console.log("Executing table-data route");
+   // console.log("Params:", params);
    const table = params.name;
    const { searchParams } = new URL(request.url);
    const limit = searchParams.get("limit")
@@ -36,7 +36,7 @@ export async function GET(
    const days = searchParams.get("days")
       ? parseInt(searchParams.get("days")!)
       : 30;
-   console.log(params);
+   // console.log(params);
 
    if (table === "customerLargestUploads") {
       const customerLargestUploads = (await queryWrapper({

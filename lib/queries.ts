@@ -79,9 +79,9 @@ ORDER BY
 
 export const MONTHLY_UPLOAD_ACTIVITY = `
 SELECT 
-   TO_CHAR(upload_date, 'YYYY-MM') AS month,
-   COUNT(*) AS total_uploads,
-   SUM(total_size) AS total_size
+   TO_CHAR(upload_date, 'Month') AS month,
+   COUNT(*) AS "Uploads",
+   ROUND(SUM(total_size)::numeric, 0) AS "Size"
 FROM
    uploads
 GROUP BY

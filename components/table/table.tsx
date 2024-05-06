@@ -20,7 +20,7 @@ export function Table({ initialData, initalColumns, className }: {
 
     const handleTableChange = (table: PropellerTable) => {
         setTable(table);
-        console.log(table)
+        // console.log(table)
     }
 
     React.useEffect(() => {
