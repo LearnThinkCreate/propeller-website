@@ -5,6 +5,7 @@ import { Inter as FontSans } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
+import { MenuBar } from "@/components/menu-bar";
 
 const fontSans = FontSans({
    subsets: ["latin"],
@@ -25,7 +26,7 @@ export default function RootLayout({
       <html suppressHydrationWarning lang="en">
          <body
             className={cn(
-               "min-h-screen bg-background font-sans antialiased",
+               "bg-background font-sans antialiased",
                fontSans.variable
             )}
          >
@@ -35,7 +36,11 @@ export default function RootLayout({
                enableSystem
                disableTransitionOnChange
             >
-               {children}
+               {/* <div className="relative flex overflow-hidden"> */}
+               <div className="flex flex-col min-h-screen">
+                  <MenuBar />
+                  {children}
+               </div>
                <TailwindIndicator />
             </ThemeProvider>
          </body>

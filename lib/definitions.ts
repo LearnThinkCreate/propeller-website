@@ -32,3 +32,34 @@ export const propellerTableArray = [
 // Derive the type from the array values
 export type PropellerTable = typeof propellerTableArray[number];
 export type PropellerTableColumn = CustomerLargestUploads | CustomersWithMultipleDrones | CustomerDronePreference | RecentCustomerActivity;
+
+export type DroneUploads = {
+    drone_model: string
+    total_size: number
+
+}
+
+export type DroneUploadsByModel = {
+    drone_model: string
+    percentage_of_total_uploads: number
+}
+
+export type DroneCardData = {
+    drone_model: string
+    total_size: number
+    percentage_of_total_uploads: number
+}
+
+export type LargestUploads = {
+    customer_name: string
+    total_size: number
+    drone_model: string
+    upload_date: Date
+}
+
+export type SiteActivity = {
+    customer_name: string
+    site_count: number
+    total_size: number
+    drone_model: string
+}

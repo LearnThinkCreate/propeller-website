@@ -59,6 +59,11 @@ export function DataTable<TData, TValue>({
       getSortedRowModel: getSortedRowModel(),
       onColumnFiltersChange: setColumnFilters,
       getFilteredRowModel: getFilteredRowModel(),
+      initialState: {
+         pagination: {
+            pageSize: 5,
+         },
+      },
       state: {
          sorting,
          columnFilters,
@@ -67,10 +72,12 @@ export function DataTable<TData, TValue>({
 
    return (
       <div className={className}>
-         <div className={cn(
-          "flex justify-between py-4 gap-4",
-          isSmallScreen ? "flex-col" : "flex-row"
-         )}>
+         <div
+            className={cn(
+               "flex justify-between py-4 gap-4",
+               isSmallScreen ? "flex-col" : "flex-row"
+            )}
+         >
             <Input
                placeholder="Search by customer name"
                value={

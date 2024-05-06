@@ -46,9 +46,8 @@ ORDER BY
 
 export const DRONE_UPLOAD_SIZE = `
 SELECT
-   products.product_id,
    drone_model,
-   SUM(uploads.total_size) as total_size
+   ROUND(SUM(total_size)::numeric, 0) as total_size
 FROM
    products
 LEFT JOIN
@@ -79,7 +78,8 @@ ORDER BY
 
 export const MONTHLY_UPLOAD_ACTIVITY = `
 SELECT 
-   TO_CHAR(upload_date, 'Month') AS month,
+   -- TO_CHAR(upload_date, 'Month') AS month,
+   EXTRACT(MONTH FROM upload_date) AS month,
    COUNT(*) AS "Uploads",
    ROUND(SUM(total_size)::numeric, 0) AS "Size"
 FROM
@@ -92,12 +92,10 @@ ORDER BY
 
 export const LARGEST_UPLOADS = `
 SELECT
-   uploads.upload_id,
-   customers.customer_id,
    first_name || ' ' || last_name as customer_name,
-   products.product_id,
    drone_model,
-   total_size
+   total_size,
+   upload_date
 FROM
    uploads
 LEFT JOIN
@@ -111,14 +109,23 @@ LIMIT 3
 
 export const SITE_ACTIVITY = `
 SELECT
-   uploads.upload_id,
-   count(distinct site_id) as site_count
+   first_name || ' ' || last_name as customer_name,
+   count(distinct site_id) as site_count,
+   ROUND(SUM(total_size)::numeric, 0) as total_size,
+   products.drone_model
 FROM
    uploads
 LEFT JOIN
    sites ON uploads.upload_id = sites.upload_id
+LEFT JOIN
+   customers ON uploads.customer_id = customers.customer_id
+LEFT JOIN
+   products ON uploads.product_id = products.product_id
 GROUP BY
-   uploads.upload_id
+   customers.customer_id,
+   customer_name,
+   uploads.upload_id,
+   products.drone_model
 ORDER BY
    site_count desc
 `;
@@ -177,7 +184,7 @@ WITH TotalUploads AS (
 )
 SELECT
    drone_model,
-   ROUND((num_uploads * 100.0 / (SELECT total_uploads FROM TotalUploads))) as percentage_of_total_uploads,    (SELECT total_uploads FROM TotalUploads) as total_uploads
+   ROUND((num_uploads * 100.0 / (SELECT total_uploads FROM TotalUploads))) as percentage_of_total_uploads 
 FROM
    UploadsByModel
 ORDER BY
@@ -228,3 +235,37 @@ export const getRecentCustomerActivity = async (days: number) =>
       last_upload_date DESC
    `,
    });
+
+export const getDroneCardData = async () => {
+   return queryWrapper({
+      stmt: `
+   WITH TotalUploads AS (
+      SELECT
+         COUNT(*) as total_uploads
+      FROM
+         uploads
+   ), UploadsByModel AS (
+      SELECT
+         products.product_id,
+         drone_model,
+         COUNT(*) as num_uploads,
+         ROUND(SUM(total_size)::numeric, 0) as total_size
+      FROM
+         products
+      LEFT JOIN
+         uploads ON products.product_id = uploads.product_id
+      GROUP BY
+         products.product_id,
+         drone_model
+   )
+   SELECT
+      drone_model,
+      ROUND((num_uploads * 100.0 / (SELECT total_uploads FROM TotalUploads))) as percentage_of_total_uploads,
+      total_size
+   FROM
+      UploadsByModel
+   ORDER BY
+      percentage_of_total_uploads DESC
+   `,
+   });
+};
