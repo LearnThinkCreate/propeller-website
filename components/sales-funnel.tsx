@@ -3,14 +3,8 @@
 import * as React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
-   Bar,
-   BarChart,
-   ReferenceLine,
    ResponsiveContainer,
-   XAxis,
-   YAxis,
    Tooltip,
-   Legend,
    Funnel,
    FunnelChart,
    LabelList
