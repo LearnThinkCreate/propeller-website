@@ -1,4 +1,3 @@
-import Image from "next/image";
 import {
    queryWrapper,
    CUSTOMER_LARGEST_UPLOADS,
