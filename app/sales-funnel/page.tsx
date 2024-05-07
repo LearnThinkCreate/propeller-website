@@ -196,10 +196,6 @@ export default async function Page() {
                description="Implement a customer feedback system to gather insights on customer satisfaction and areas for improvement."
             />
             <RecommendationCard
-               title="Review Qualification Criteria"
-               description="Review and refine the qualification criteria to ensure that only the most promising leads are being pursued."
-            />
-            <RecommendationCard
                title="Hire Me"
                description=":)"
             />
