@@ -151,26 +151,26 @@ export default async function Page() {
                      </OpportunitListHeader>
                      <OpportunityList>
                         <OpportunityListItem
-                           header="Why do customers swap drones?"
+                           header="Why Do Customers Swap Drones?"
                            body={`
                            Are the root cause of the swaps known
                            and understood?
                         `}
                         />
                         <OpportunityListItem
-                           header="How often do swaps occur?"
+                           header="How Often Do Swaps Occur?"
                            body={`
                            Understanding the frequency of swaps can help gauge the inconvenience or cost implications to the customer.
                         `}
                         />
                         <OpportunityListItem
-                           header="What impact do these swaps have on project timelines and costs?"
+                           header="What Impact Do These Swaps Have On Project Timelines and Costs?"
                            body={`
                            Are there delays or increased costs associated with swapping drones, such as downtime, recalibration, or transportation?
                         `}
                         />
                         <OpportunityListItem
-                           header="What types of projects are these drones being used for?"
+                           header="What Types Of Projects Are These Drones Being Used For?"
                            body={`
                            Knowing whether the projects are commercial, agricultural, construction, etc., can provide insights into why multiple drones might be needed.
                         `}
@@ -219,7 +219,7 @@ export default async function Page() {
                      <OpportunitListHeader index={recommendations}></OpportunitListHeader>
                      <OpportunityList>
                         <OpportunityListItem
-                           header="Gather Feedback from Customers"
+                           header="Gather Feedback From Customers"
                            body={`
                               Select a sample of customers from each opportunity category and conduct interviews 
                               or surveys to understand their pain points, needs, and preferences. This qualitative data can 

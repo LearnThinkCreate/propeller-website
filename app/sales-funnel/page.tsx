@@ -178,7 +178,7 @@ export default async function Page() {
                     </p>
                     <p>
                         If the 50% dropoff rate for qualified leads is a reason for concern,
-                        it may be worth it to to experiment with different sales 
+                        it may be worth it to experiment with different sales 
                         strategies.
                     </p>
                 </div>
