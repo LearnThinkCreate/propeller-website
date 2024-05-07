@@ -7,7 +7,7 @@ import {
    Tooltip,
    Funnel,
    FunnelChart,
-   LabelList
+   LabelList,
 } from "recharts";
 import { cn } from "@/lib/utils";
 
@@ -25,38 +25,40 @@ export const SalesFunnel = ({
    return (
       <Card className="flex-1 w-full flex flex-col min-h-96">
          <CardHeader>
-            <CardTitle>Monthly Upload Activity</CardTitle>
+            <CardTitle>Sales Funnel</CardTitle>
          </CardHeader>
          <CardContent className="flex-1">
-            <ResponsiveContainer width="100%" height="100%" minHeight={500}>
+            <ResponsiveContainer width="100%" height={300}>
                <FunnelChart
                   margin={{ top: 20, right: 20, bottom: 20, left: 20 }}
                >
-                  <Tooltip 
-                  cursor={false}
-                  contentStyle={{
-                     backgroundColor: "bg-transparent",
-                     border: "none",
-                     color: textColor,
-                  }}
-                  itemStyle={{
-                     color: textColor,
-                  }}
-                  position={{ x: 0, y: -20 }}
-                  formatter={((value, name, props) => [value, STAGES[name as number]])}
-                  separator=" -  "
+                  <Tooltip
+                     cursor={false}
+                     contentStyle={{
+                        backgroundColor: "bg-transparent",
+                        border: "none",
+                        color: textColor,
+                     }}
+                     itemStyle={{
+                        color: textColor,
+                     }}
+                     position={{ x: 0, y: -20 }}
+                     formatter={(value, name, props) => [
+                        value,
+                        STAGES[name as number],
+                     ]}
+                     separator=" -  "
                   />
                   <Funnel
                      data={JSON.parse(data)}
                      dataKey="count"
                      isAnimationActive
-                     
                   >
-                    <LabelList 
-                    position="center" 
-                  fill={primaryColor}
-                    dataKey="stage" 
-                    />
+                     <LabelList
+                        position="center"
+                        fill={primaryColor}
+                        dataKey="stage"
+                     />
                   </Funnel>
                </FunnelChart>
             </ResponsiveContainer>
@@ -65,10 +67,4 @@ export const SalesFunnel = ({
    );
 };
 
-
-const STAGES = [
-   'Lead',
-   'Prospect',
-   'Qualified',
-   'Closed'
-]
+const STAGES = ["Lead", "Prospect", "Qualified", "Closed"];

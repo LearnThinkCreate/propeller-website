@@ -1,18 +1,6 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
-// Part 3 - Asking the right questions
-// You’ve been instructed to use data help maximize revenue opportunities for one of our existing customer teams. The first area of action is figuring out how to sell additional drone unlimited licenses to existing customers (customers who already have at least one drone unlimited license active with Propeller). With over 1,000 customers, the team isn’t sure who they should approach and who might be a good fit to try and sell an additional license to. You have the following information about our drone unlimited licenses:
-// Drone Unlimited Licenses are constrained to a single drone, meaning you cannot leverage more than one drone per license
-// Drone Unlimited Licenses have different size limits: some customers fly a site twice in order to not have to upgrade to a license with a larger limit
-// Some customers use the same drone on multiple projects/or have multiple projects spanning large distances from one another
-// Some customers frequently swap out the drone that their license is constrained to
-
-// Given the above information:
-// What additional data or questions would you like to know in order to come up with a list of customers who could benefit from/be easier to sell an additional drone unlimited license?
-// What opportunities for this upsell can you identify using the information provided, and what data would you want to dig into further?
-// How would you recommend the sales team go about maximizing these opportunities based on your findings?
-
 export default async function Page() {
    const siteSizeOpportunity = 0;
    const transportationOpportunity = 1;
@@ -165,12 +153,8 @@ export default async function Page() {
                         <OpportunityListItem
                            header="Why do customers swap drones?"
                            body={`
-                           Is it due to specific project requirements, such as different terrain or project scales that require different drone capabilities?
-                        `}
-                        />
-                        <OpportunityListItem
-                           body={`
-                           Is it because of drone maintenance or availability issues?
+                           Are the root cause of the swaps known
+                           and understood?
                         `}
                         />
                         <OpportunityListItem
@@ -290,6 +274,7 @@ const Opportunity = React.forwardRef<HTMLDivElement, OpportunityProps>(
       />
    )
 );
+Opportunity.displayName = "Opportunity"
 
 const OpportunityBody = React.forwardRef<
    HTMLDivElement,
@@ -301,6 +286,7 @@ const OpportunityBody = React.forwardRef<
       className={cn("max-w-3xl mx-auto space-y-5", className)}
    />
 ));
+OpportunityBody.displayName = "OpportunityBody"
 
 const OpportunityContent = React.forwardRef<
    HTMLDivElement,
@@ -308,6 +294,7 @@ const OpportunityContent = React.forwardRef<
 >(({ className, ...props }, ref) => (
    <div ref={ref} {...props} className={cn("space-y-10", className)} />
 ));
+OpportunityContent.displayName = "OpportunityContent"
 
 const OpportunityContentItem = React.forwardRef<
    HTMLDivElement,
@@ -315,6 +302,7 @@ const OpportunityContentItem = React.forwardRef<
 >(({ className, ...props }, ref) => (
    <div ref={ref} {...props} className={cn("space-y-4", className)} />
 ));
+OpportunityContentItem.displayName = "OpportunityContentItem"
 
 const OpportunityHeader = React.forwardRef<
    HTMLHeadingElement,
@@ -326,6 +314,7 @@ const OpportunityHeader = React.forwardRef<
       className={cn("text-4xl font-bold mb-8", className)}
    />
 ));
+OpportunityHeader.displayName = "OpportunityHeader"
 
 const OpportunityList = React.forwardRef<
    HTMLUListElement,
@@ -333,6 +322,7 @@ const OpportunityList = React.forwardRef<
 >(({ className, ...props }, ref) => (
    <ul ref={ref} {...props} className={cn("space-y-4", className)} />
 ));
+OpportunityList.displayName = "OpportunityList"
 
 interface OpportunitListHeaderProps
    extends React.HTMLAttributes<HTMLHeadingElement> {
@@ -351,6 +341,7 @@ const OpportunitListHeader = React.forwardRef<
       )}
    />
 ));
+OpportunitListHeader.displayName = "OpportunitListHeader"
 
 interface OpportunityListItemProps {
    header?: string;
