@@ -190,7 +190,7 @@ export default async function Page() {
          Recommendations
          </h2>
 
-         <div className="grid gap-6 md:grid-cols-3">
+         <div className="grid gap-6 md:grid-cols-2">
             <RecommendationCard
                title="Seek Customer Feedback"
                description="Implement a customer feedback system to gather insights on customer satisfaction and areas for improvement."
