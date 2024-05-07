@@ -18,7 +18,7 @@ export const MenuBar = ({  }) => {
         <Link href={{
             pathname: '/questions',
         }}>
-            ?'s
+            Revenue Opportunities
         </Link>
         <Link href={{
             pathname: '/queries',

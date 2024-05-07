@@ -4,6 +4,7 @@ import {
    CollapsibleContent,
    Collapsible,
 } from "@/components/ui/collapsible";
+import { cn } from "@/lib/utils";
 
 export default async function Page() {
    return (
@@ -14,14 +15,18 @@ export default async function Page() {
       </main>
    );
 }
-
+// from-[#6366F1] to-[#8B5CF6]
 const CollapsibleCard = (query: any) => {
    return (
-      <Collapsible className="border rounded-lg overflow-hidden">
-         <CollapsibleTrigger className="flex items-center justify-between bg-gray-100 dark:bg-gray-800 px-6 py-4 w-full">
-            <h3 className="font-semibold">{query.name}</h3>
-         </CollapsibleTrigger>
-         <CollapsibleContent className="p-6 space-y-4">
+      // <Collapsible className="rounded-lg bg-gradient-to-r from-[#6366F1] to-[#8B5CF6] shadow-lg">
+      <Collapsible className={cn(
+         "rounded-lg shadow-lg  bg-gradient-to-r",
+         query.hexCode
+      )}>
+        <CollapsibleTrigger className="flex items-center justify-between gap-4 rounded-t-lg bg-transparent px-6 py-4 text-white w-full hover:animate-pulse">
+          <h3 className="text-lg font-semibold">{query.name}</h3>
+        </CollapsibleTrigger>
+         <CollapsibleContent className="p-6 space-y-4 bg-accent rounded-b-lg shadow-inner">
             <div>
                <h4 className="font-medium mb-2">Question</h4>
                <p>{query.question}</p>
@@ -47,14 +52,16 @@ const queryData = [
       question:
          "For each customer, find the maximum upload size they have ever uploaded.",
       SQL: queries.CUSTOMER_LARGEST_UPLOADS,
-      description: "This query selects each customer's largest upload and associated drone model by joining the customers, uploads, and products tables. It calculates the maximum upload size for each customer and groups the results by customer, upload date, and drone model. The data is then ordered by the largest upload in descending order."
+      description: "This query selects each customer's largest upload and associated drone model by joining the customers, uploads, and products tables. It calculates the maximum upload size for each customer and groups the results by customer, upload date, and drone model. The data is then ordered by the largest upload in descending order.",
+      hexCode: "from-[#4b6bfb] to-[#2948ff]"
    },
    {
       id: 2,
       name: "Total Upload Size by Drone Model",
       question: "Sum the total size of uploads for each drone model.",
       SQL: queries.DRONE_UPLOAD_SIZE,
-      description: "This query calculates the total size of uploads for each drone model by joining the products and uploads tables. It groups the results by drone model and orders the data by the total size in descending order."
+      description: "This query calculates the total size of uploads for each drone model by joining the products and uploads tables. It groups the results by drone model and orders the data by the total size in descending order.",
+      hexCode: "from-[#6a11cb] to-[#2575fc]"
    },
    {
       id: 3,
@@ -62,7 +69,8 @@ const queryData = [
       question:
          "Find customers who have uploaded data from more than one type of drone.",
       SQL: queries.CUSTOMERS_MULTIPLE_DRONE,
-      description: "This query selects customers who have uploaded data from more than one type of drone by joining the customers and uploads tables. It counts the number of distinct drone models each customer has uploaded data from and filters the results to only include customers with more than one drone model. The data is then ordered by the number of drone models in descending order."
+      description: "This query selects customers who have uploaded data from more than one type of drone by joining the customers and uploads tables. It counts the number of distinct drone models each customer has uploaded data from and filters the results to only include customers with more than one drone model. The data is then ordered by the number of drone models in descending order.",
+      hexCode: "from-[#ff6b6b] to-[#ffa3a3]"
    },
    {
       id: 4,
@@ -70,22 +78,25 @@ const queryData = [
       question:
          "Show the total number of uploads and total upload size for each month.",
       SQL: queries.MONTHLY_UPLOAD_ACTIVITY,
-      description: "This query calculates the total number of uploads and total upload size for each month by grouping the uploads table by month. It orders the results by month."
+      description: "This query calculates the total number of uploads and total upload size for each month by grouping the uploads table by month. It orders the results by month.",
+      hexCode: "from-[#ffa500] to-[#ffcc80]"
    },
    {
       id: 5,
-      name: "Top 3 Largest Uploads:",
+      name: "3 Largest Uploads",
       question:
          "Identify the top 3 largest uploads across all customers and provide details of the corresponding customer and drone model.",
       SQL: queries.LARGEST_UPLOADS,
-      description: "This query selects the top 3 largest uploads across all customers by joining the customers, uploads, and products tables. It groups the results by customer name, upload date, and drone model, sums the total size of each upload, and orders the data by the largest upload in descending order. The output is limited to the top 3 uploads."
+      description: "This query selects the top 3 largest uploads across all customers by joining the customers, uploads, and products tables. It groups the results by customer name, upload date, and drone model, sums the total size of each upload, and orders the data by the largest upload in descending order. The output is limited to the top 3 uploads.",
+      hexCode: "from-[#00c853] to-[#66bb6a]"
    },
    {
       id: 6,
       name: "Site Activity",
       question: "Determine which site has the highest number of uploads",
       SQL: queries.SITE_ACTIVITY,
-      description: "There is a many-to-one relationship between sites and uploads. Multiple sites can be associated with a single upload. This question should be worded as 'Which upload has the highest number of sites?' The query groups the uploads by upload ID and counts the number of sites associated with each upload. It then orders the results by the number of sites in descending order."
+      description: "There is a many-to-one relationship between sites and uploads. Multiple sites can be associated with a single upload. This question should be worded as 'Which upload has the highest number of sites?' The query groups the uploads by upload ID and counts the number of sites associated with each upload. It then orders the results by the number of sites in descending order.",
+      hexCode: "from-[#00b8d4] to-[#4dd0e1]"
    },
    {
       id: 7,
@@ -93,7 +104,8 @@ const queryData = [
       question:
          "List each customer along with the most frequently used drone model based on the number of uploads.",
       SQL: queries.CUSTOMER_DRONE_PREFERENCE,
-      description: "This query selects each customer and their most frequently used drone model based on the number of uploads by joining the customers, uploads, and products tables. It counts the number of uploads for each customer and drone model, groups the results by customer name and drone model, orders the data by the number of uploads in descending order, and limits the output to the top 1 drone model per customer."
+      description: "This query selects each customer and their most frequently used drone model based on the number of uploads by joining the customers, uploads, and products tables. It counts the number of uploads for each customer and drone model, groups the results by customer name and drone model, orders the data by the number of uploads in descending order, and limits the output to the top 1 drone model per customer.",
+      hexCode: "from-[#e040fb] to-[#ea80fc]"
    },
    {
       id: 8,
@@ -101,7 +113,8 @@ const queryData = [
       question:
          "For each drone model, calculate the percentage they contribute to the total number of uploads.",
       SQL: queries.UPLOADS_BY_MODEL,
-      description: "This query calculates the percentage of total uploads contributed by each drone model by joining the products and uploads tables. It counts the number of uploads for each drone model, calculates the total number of uploads, and calculates the percentage of uploads contributed by each drone model. The data is ordered by the percentage contributed in descending order."
+      description: "This query calculates the percentage of total uploads contributed by each drone model by joining the products and uploads tables. It counts the number of uploads for each drone model, calculates the total number of uploads, and calculates the percentage of uploads contributed by each drone model. The data is ordered by the percentage contributed in descending order.",
+      hexCode: "from-[#2980b9] to-[#6bb9f0]"
    },
    {
       id: 9,
@@ -109,6 +122,7 @@ const queryData = [
       question:
          "Find all customers who have made an upload in the last 30 days.",
       SQL: queries.RECENT_CUSTOMER_ACTIVITY,
-      description: "This query selects all customers who have made an upload in the last 30 days by joining the customers and uploads tables. It filters the results to only include uploads within the last 30 days and groups the data by customer name."
+      description: "This query selects all customers who have made an upload in the last 30 days by joining the customers and uploads tables. It filters the results to only include uploads within the last 30 days and groups the data by customer name.",
+      hexCode: "from-[#9b59b6] to-[#8e44ad]"
    },
 ];
